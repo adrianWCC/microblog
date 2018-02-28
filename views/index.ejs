@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <title><%= title %></title>
+  <script src="javascripts/mui.js"></script>
+  <link href="stylesheets/mui.css" rel="stylesheet"/>
+  <script type="text/javascript" charset="utf-8">
+      mui.init();
+  </script>
+</head>
+<body>
+<div class="mui-content">
+  <header class="mui-bar mui-bar-nav mui-bar-transparent" data-top='0' data-offset='150' data-duration='16' data-scrollby=".mui-scroll-wrapper">
+    <h1 class="mui-title"><%= title %></h1>
+  </header>
+  <section style="margin: 54px 0">
+      <% posts.forEach(function(post,index){ %>
+          <div class="mui-card">
+              <!--页眉，放置标题-->
+              <div class="mui-card-header mui-card-media">
+                  <img src="<%= post.loft%>" />
+                  <div class="mui-media-body">
+                      <%= post.user%>
+                      <p>发表于 <%= post.date.toLocaleDateString()%></p>
+                  </div>
+              </div>
+              <!--内容区-->
+              <div class="mui-card-content">
+                  <% post.imgList.forEach(function(img,n){ %>
+                      <img src="<%= img %>" alt="" width="100%">
+                  <% }) %>
+                  <p><%= post.title %></p>
+              </div>
+              <!--页脚，放置补充信息或支持的操作-->
+              <div class="mui-card-footer">
+                  <a class="mui-card-link">Like</a>
+                  <a class="mui-card-link">Comment</a>
+                  <a class="mui-card-link">Read more</a>
+              </div>
+          </div>
+      <% }) %>
+  </section>
+  <footer class="mui-bar mui-bar-nav" style="bottom: 0;top:auto">
+    <div class="mui-row" style="text-align: center">
+      <div class="mui-col-sm-4 mui-col-xs-4">
+        <a href="/">
+          <span class="mui-icon mui-icon-home"></span>
+        </a>
+      </div>
+      <div class="mui-col-sm-4 mui-col-xs-4">
+        <a href="/publication">
+          <button type="button" class="mui-btn mui-btn-outlined">+</button>
+        </a>
+      </div>
+      <div class="mui-col-sm-4 mui-col-xs-4">
+        <a href="./users">
+          <span class="mui-icon mui-icon-person"></span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title><%= title %></title>
+    <script src="javascripts/mui.js"></script>
+    <link href="stylesheets/mui.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+    <style>
+        #tip{
+            overflow: hidden;
+            animation: tip 2s 1;
+            animation-fill-mode : forwards;
+            background-color: lightcoral;text-align: center;z-index:9;
+        }
+        @keyframes tip {
+            from{
+                display: block;
+                height: 43px;
+            }to{
+                height: 0;
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="mui-content">
+    <header class="mui-bar mui-bar-nav mui-bar-transparent" data-top='0' data-offset='150' data-duration='16' data-scrollby=".mui-scroll-wrapper">
+        <h1 class="mui-title">登录/注册</h1>
+    </header>
+    <section style="margin: 54px 0">
+        <% if(error.length>0){ %>
+            <ul class="mui-table-view" id="tip">
+                <li class="mui-table-view-cell">
+                    <%= error %>
+                </li>
+            </ul>
+        <% } %>
+        <form class="mui-input-group" action="/login/reg" method="post">
+            <div class="mui-input-row">
+                <label>用户名</label>
+                <input type="text" name="username" class="mui-input-clear" placeholder="请输入用户名">
+            </div>
+            <div class="mui-input-row">
+                <label>密码</label>
+                <input type="password" name="password" class="mui-input-password" placeholder="请输入密码">
+            </div>
+            <div class="mui-button-row">
+                <button type="submit" class="mui-btn mui-btn-primary" >确认</button>
+                <button type="button" class="mui-btn mui-btn-danger" >取消</button>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

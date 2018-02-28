@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="javascripts/mui.js"></script>
+    <link href="stylesheets/mui.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+</head>
+<body>
+<div class="mui-content">
+    <form action="/publication/post" style="margin-top: 44px;" method="post"  enctype="multipart/form-data">
+        <header class="mui-bar mui-bar-nav mui-bar-transparent" data-top='0' data-offset='150' data-duration='16' data-scrollby=".mui-scroll-wrapper">
+            <h1 class="mui-title">发布</h1>
+            <button type="submit" style="position: absolute;right: 5px;top:5px;background-color:#efeff4;">发送</button>
+        </header>
+        <label for="info"></label>
+        <textarea name="title" id="info" cols="30" rows="5" style="background-color: #efeff4;border: 0;" placeholder="发布新鲜事..."></textarea>
+        <div style="padding-left:3%" id="imgList">
+            <!--<img src="./images/yuantiao.jpg" alt="" width="48%">
+            <img src="./images/yuantiao.jpg" alt="" width="48%">-->
+            <button type="button" class="mui-btn mui-btn-outlined" style="width: 48%;height: 115px">
+                <input type="file" id="imgInput" name="imgList" style=" position: absolute;font-size: 100px;right: 0;top: 0;opacity: 0;filter: alpha(opacity=0);cursor: pointer" multiple="multiple">
+                +
+            </button>
+        </div>
+    </form>
+    <footer class="mui-bar mui-bar-nav" style="bottom: 0;top:auto">
+        <div class="mui-row" style="text-align: center">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="/">
+                    <span class="mui-icon mui-icon-home"></span>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="/publication">
+                    <button type="button" class="mui-btn mui-btn-outlined">+</button>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="/users">
+                    <span class="mui-icon mui-icon-person"></span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="./javascripts/publicpage.js"></script>
+</body>
+</html>

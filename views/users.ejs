@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title><%= title %></title>
+    <script src="javascripts/mui.js"></script>
+    <link href="stylesheets/mui.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+</head>
+<body>
+<div class="mui-content">
+    <header class="mui-bar mui-bar-nav mui-bar-transparent" data-top='0' data-offset='150' data-duration='16' data-scrollby=".mui-scroll-wrapper">
+        <h1 class="mui-title"><%= title %></h1>
+    </header>
+    <section style="margin: 54px 0">
+        <div class="mui-card" style="margin: 0 0 10px 0">
+            <!--页眉，放置标题-->
+            <div class="mui-card-header mui-card-media">
+                <img id="userImg" src="<%= (user.loft?user.loft:'./images/logo.png') %>" />
+                <% if(user){ %>
+                    <input type="file" id="imgInput" name="avatar" style=" position: absolute;width:45px;font-size: 30px;left: 0;top: 0;opacity: 0;filter: alpha(opacity=0);cursor: pointer">
+                <% } %>
+                <div class="mui-media-body" style="position: relative;z-index: 99">
+                    <% if (user) { %>
+                        <%= user.name %>
+                        <p>简介:
+                                <%= user.introduction %>
+                                <span class="mui-icon mui-icon-compose" id="editBtn"></span>
+                                <input type="text" id="editInput" class="mui-hidden"/>
+                        </p>
+                    <% } %>
+                    <% if(!user) {%>
+                    <h4><a href="/login">请登录</a></h4>
+                    <% } %>
+                </div>
+            </div>
+            <div class="mui-card-footer" style="border-top:0 ">
+                <a class="mui-card-link">帖子</a>
+                <a class="mui-card-link">关注</a>
+                <a class="mui-card-link">粉丝</a>
+            </div>
+        </div>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right">
+                    <span class="mui-icon mui-icon-personadd"></span>
+                    新的粉丝
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right">
+                    <span class="mui-icon mui-icon-paperplane"></span>
+                    我的故事
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right">
+                    <span class="mui-icon mui-icon-camera"></span>
+                    发现故事
+                </a>
+            </li>
+        </ul>
+    </section>
+    <footer class="mui-bar mui-bar-nav" style="bottom: 0;top:auto">
+        <div class="mui-row" style="text-align: center">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="/">
+                    <span class="mui-icon mui-icon-home"></span>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="/publication">
+                    <button type="button" class="mui-btn mui-btn-outlined">+</button>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a href="./users">
+                    <span class="mui-icon mui-icon-person"></span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script>
+    var btn = document.getElementById("editBtn");
+    var input = document.getElementById("editInput");
+    btn.addEventListener("tap",function(e){
+        this.classList.add("mui-hidden");
+        input.classList.remove("mui-hidden");
+    });
+    input.addEventListener("blur",function(e){
+        var txt = this.value;
+        if(txt.length>15){
+            txt = txt.substring(0,15);
+        }
+        subIntroduction(txt);
+    });
+    function subIntroduction(txt) {
+        mui.ajax('/users/introduce',{
+            data:{
+                introduction:txt
+            },
+            dataType:'json',//服务器返回json格式数据
+            type:'post',//HTTP请求类型
+            timeout:10000,//超时时间设置为10秒；
+            headers:{'Content-Type':'application/json'},
+            success:function(data){
+                if(data.status===200){
+                    window.location.reload();
+                }
+                //服务器返回响应，根据响应结果，分析是否登录成功；
+            },
+            error:function(xhr,type,errorThrown){
+                //异常处理；
+                console.log(type);
+            }
+        })
+    }
+
+    var imgInput = document.getElementById("imgInput");
+    imgInput.addEventListener('change',function (event) {
+        var files = event.target.files||event.dataTransfer.files;
+        if(files){
+            var render = new FileReader();
+            render.readAsDataURL(files[0]);
+            render.onload = function () {
+                var img = document.getElementById("userImg");
+                img.src = this.result;
+                upLoadImg(files[0]);
+            }
+        }
+    });
+    function upLoadImg(file) {
+        var formData = new FormData();
+        formData.append('image', file);
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/users/imgUpLoad');
+        xhr.send(formData);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                var res = JSON.parse(xhr.responseText);
+                console.log(res);
+
+                /*document.getElementById("userImg").src = res.data.url;*/
+            }
+        }
+        /*mui.ajax('/users/imgUpLoad',{
+            data:formData,
+            dataType:'json',//服务器返回json格式数据
+            type:'post',//HTTP请求类型
+            timeout:10000,//超时时间设置为10秒；
+            headers:false,
+            success:function(data){
+                if(data.status===200){
+                    window.location.reload();
+                }
+                //服务器返回响应，根据响应结果，分析是否登录成功；
+            },
+            error:function(xhr,type,errorThrown){
+                //异常处理；
+                console.log(type);
+            }
+        })*/
+    }
+</script>
+</body>
+</html>
